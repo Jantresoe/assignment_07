@@ -187,4 +187,6 @@ def gap_analysis(menus: pd.DataFrame) -> pd.DataFrame:
         ascending=[True, False, True],
         kind="stable",
     )
-    return result[["canonical", "kind", "where", "rivals", "sold_by"]].reset_index(drop=True)
+    return result[["canonical", "kind", "where", "rivals", "sold_by"]].reset_index(
+        drop=True
+    )

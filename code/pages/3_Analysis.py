@@ -72,7 +72,11 @@ with prices_tab:
         key="products",
         placeholder="All products",
     )
-    shown = comparison[comparison["canonical"].isin(products)] if products else comparison
+    shown = (
+        comparison[comparison["canonical"].isin(products)]
+        if products
+        else comparison
+    )
     st.dataframe(shown, hide_index=True)
     st.caption(
         "👍👍 lower than all of them · 👍 lower than their average · 👉👈 average · "
