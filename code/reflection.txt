@@ -1,4 +1,4 @@
-Write your reflection here.
+This assignment was challenging because it required me to integrate multiple functions into one cohesive data pipeline, from web scraping and data cleaning to matching competitors’ products with our own. I developed a better understanding of web scraping by learning how to inspect HTML structures, identify elements using selectors, and extract relevant product information such as names and prices. I also strengthened my Pandas skills by cleaning and merging datasets, performing price comparisons, and analyzing pricing gaps, while using Streamlit to turn the results into an interactive application with useful filters and data displays. One of my biggest challenges was managing code spread across multiple files, which made tracing errors throughout the pipeline especially difficult. However, overcoming these issues improved my debugging skills and helped me better understand how individual functions work together in a complete data workflow.
 
 See reflection.md for what makes a good reflection — be specific, use the
 terminology from this assignment (HTML element, CSS selector, class and id

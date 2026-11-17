@@ -12,11 +12,52 @@ Test it: pytest tests/test_pipeline.py -k scrape_page
 """
 
 import os
+import sys
 
 import pandas as pd
 import streamlit as st
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from rivals import CAFES, MENUS_FILE, OUR_CAFE, run_scraper
+
+st.title("Salt City: Scrape the Rivals")
+st.markdown("Pick the cafés to scrape. Each run replaces the saved dataset.")
+
+cafes = st.multiselect("Cafés", options=list(CAFES), default=list(CAFES), key="cafes")
+
+if st.button("Scrape", key="scrape") and cafes:
+    with st.spinner("Scraping the rivals' menus..."):
+        result = run_scraper(cafes)
+
+    if result.returncode == 0:
+        output_lines = result.stdout.strip().splitlines()
+        last_line = output_lines[-1] if output_lines else ""
+        st.success(last_line)
+    else:
+        st.error("The scraper failed")
+        st.code(result.stderr)
+
+if not os.path.exists(MENUS_FILE):
+    st.info("No menus yet — scrape the rivals to build the dataset.")
+    st.stop()
+
+menus = pd.read_csv(MENUS_FILE)
+theirs = menus[menus["cafe"] != OUR_CAFE]
+
+col1, col2, col3 = st.columns(3)
+col1.metric("Cafés", theirs["cafe"].nunique())
+col2.metric("Items", theirs[["cafe", "item"]].drop_duplicates().shape[0])
+col3.metric("Rows", len(theirs))
+
+st.dataframe(menus, hide_index=True)
+st.download_button(
+    "Download the dataset",
+    menus.to_csv(index=False),
+    file_name="menus.csv",
+    mime="text/csv",
+    key="download",
+)
 
 # --- The page: the algorithm, step by step ------------------------------------------
 #
